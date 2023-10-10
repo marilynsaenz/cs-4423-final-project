@@ -35,9 +35,14 @@ public class PlayerMovement : MonoBehaviour
 
     public void Jump()
     {
-        if (Physics2D.OverlapCircleAll(transform.position-new Vector3(0, 0.5f, 0), 1, groundMask).Length > 0)
+        if (Physics2D.OverlapCircleAll(transform.position-new Vector3(0, 0.5f, 0), 1, groundMask).Length == 0)
         {
-            rb.AddForce(new Vector3(0, jumpForce, 0), ForceMode2D.Impulse);
+            return;
         }
+        if (rb.velocity.y > .1)
+        {
+            return;
+        }
+        rb.AddForce(new Vector3(0, jumpForce, 0), ForceMode2D.Impulse);
     }
 }
