@@ -42,3 +42,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Bottom Platform
+    uniqueID: 3718978125
+    locked: 0
+  - name: Top Platform
+    uniqueID: 1507807019
+    locked: 0
+  - name: Ground
+    uniqueID: 3631944757
+    locked: 0
+  - name: Player
+    uniqueID: 1401752831
+    locked: 0
