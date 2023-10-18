@@ -9,12 +9,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float jumpForce = 10;
     [SerializeField] LayerMask groundMask;
 
-    void Update()
-    {
-        Debug.DrawRay(transform.position - new Vector3(0, 0.5f, 0), Vector2.right * 1, Color.green);
-        Debug.DrawRay(transform.position - new Vector3(0, 0.5f, 0), Vector2.left * 1, Color.green);
-    }
-
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();

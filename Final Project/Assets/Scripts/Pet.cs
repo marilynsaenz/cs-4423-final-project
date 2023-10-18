@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Pet : MonoBehaviour
 {
@@ -15,14 +16,21 @@ public class Pet : MonoBehaviour
     SpriteRenderer spriteRenderer;
     bool isDeathSequence = false;
 
+    Player playerScript;
+    Vector3 initialPosition;
+
+    [SerializeField] AudioClip eatEnemy;
+
     void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        initialPosition = transform.localPosition;
     }
 
     // Update is called once per frame
     void Update()
     {
+        playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         hunger -= Time.deltaTime * hungerSpeedRate;
 
         float hungerLevel = Mathf.Clamp(hunger / 100f, 0f, 1f);
@@ -46,9 +54,12 @@ public class Pet : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
+            GetComponent<AudioSource>().clip = eatEnemy;
+            GetComponent<AudioSource>().Play();
             FeedPet();
             Destroy(other.gameObject);
         }
+        
     }
 
     void PetDeathSequence()
@@ -59,22 +70,27 @@ public class Pet : MonoBehaviour
             // pause
             Time.timeScale = 0f;
 
-            yield return new WaitForSecondsRealtime(2);
-
-            // resume
-            Time.timeScale = 1f;
+            float lastTime = Time.realtimeSinceStartup;
 
             while(Vector2.Distance(transform.position, player.position) > someThreshold)
             {
-                transform.position = Vector2.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
+                float currentTime = Time.realtimeSinceStartup;
+                transform.position = Vector2.MoveTowards(transform.position, player.position, moveSpeed * (currentTime - lastTime));
                 yield return null;
+                lastTime = currentTime;
             }
-            RestartLevel();
+
+            Time.timeScale = 1f;
+            playerScript.LoseLife();
         }
     }
 
-    void RestartLevel()
+    public void ResetPet(Vector3 newPosition)
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+        transform.parent.position = newPosition; 
+        transform.localPosition = initialPosition;
+        hunger = 100f;
+        isDeathSequence = false;
+        FeedPet();
     }
 }

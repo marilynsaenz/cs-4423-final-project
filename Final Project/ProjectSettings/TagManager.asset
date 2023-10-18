@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Enemy
   - Checkpoint
+  - Coin
+  - Pet
+  - Heart
   layers:
   - Default
   - TransparentFX
@@ -13,11 +16,11 @@ TagManager:
   - Ground
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Pet
+  - Coins
+  - Hearts
+  - Enemies
   - 
   - 
   - 
